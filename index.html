@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OLMS</title>
+    <style>
+        /* Updated CSS */
+.main {
+  width: 100%;
+  display: flex;
+  background-color: aliceblue;
+  justify-content: space-around;
+  padding: 10px;
+  gap: 10px;
+  border: 2px solid rgb(152, 195, 233);
+}
+
+.book-list,
+.add-books,
+.search-list {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid rgb(152, 195, 233);
+  background-color: white;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.book-list:hover,
+.add-books:hover,
+.search-list:hover {
+  transform: scale(1.05);
+}
+
+.input {
+  width: 96%;
+  height: 2rem;
+  margin: 6px 0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 5px;
+}
+
+.button {
+  width: 100%;
+  height: 2rem;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(41, 163, 249);
+  color: white;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: rgb(31, 143, 229);
+}
+
+    </style>
+  </head>
+  <body>
+    <h1>OLMS</h1>
+    <div class="main">
+      <div class="book-list">
+        <h2>Book List</h2>
+        <ol>
+          <li>
+            Hacking: The art of Exploitation by Jon Erickson
+            <span>ISBN: 978-1593271442</span>
+          </li>
+          <li>
+            Introduction to theory of Computation by Michael Sipser
+            <span>ISBN: 978-1133187790</span>
+          </li>
+          <li>
+            Introduction to C++ Programing a Modern way approach
+            <span>ISBN: 978-1225674325</span>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Add new Book -->
+<div class="add-books">
+    <h2>Add new Book</h2>
+    <div class="container">
+      <input type="text" placeholder="Title" id="title" class="input" />
+      <input type="text" placeholder="Author" id="author" class="input" />
+      <input type="number" placeholder="ISBN" id="isbn" class="input" />
+    </div>
+  
+    <div>
+      <button type="submit" class="button add-button">Add Book</button>
+    </div>
+  </div>
+  
+      <div class="search-list">
+        <h2>Search for Books</h2>
+        <input type="text" placeholder="search" class="input"/>
+
+        <div>
+            <button type="submit" class="button">Search</button>
+        </div>
+        
+      </div>
+    </div>
+
+    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+  const addButton = document.querySelector(".add-button");
+  const titleInput = document.querySelector("#title");
+  const authorInput = document.querySelector("#author");
+  const isbnInput = document.querySelector("#isbn");
+  const bookList = document.querySelector(".book-list ol");
+
+  addButton.addEventListener("click", function () {
+    const newTitle = titleInput.value;
+    const newAuthor = authorInput.value;
+    const newISBN = isbnInput.value;
+
+    // Check for duplicates
+    const existingBooks = bookList.querySelectorAll("li");
+    for (const book of existingBooks) {
+      const isbnSpan = book.querySelector("span");
+      if (isbnSpan.textContent.includes(newISBN)) {
+        alert("Duplicate entry! This ISBN already exists in the list.");
+        return;
+      }
+    }
+
+    // If no duplicates, add the new book
+    const newBook = document.createElement("li");
+    newBook.innerHTML = `
+      ${newTitle}
+      <span>ISBN: ${newISBN}</span>
+    `;
+    bookList.appendChild(newBook);
+
+    // Clear input fields
+    titleInput.value = "";
+    authorInput.value = "";
+    isbnInput.value = "";
+  });
+
+  // Search for Books
+  const searchInput = document.querySelector(".search-list input");
+  const searchButton = document.querySelector(".search-list button");
+
+  searchButton.addEventListener("click", function () {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    const allBooks = bookList.querySelectorAll("li");
+    allBooks.forEach(function (book) {
+      const bookTitle = book.textContent.toLowerCase();
+
+      if (bookTitle.includes(searchTerm)) {
+        book.style.display = "block";
+      } else {
+        book.style.display = "none";
+      }
+    });
+  });
+});
+
+
+      </script>
+      
+  </body>
+</html>
